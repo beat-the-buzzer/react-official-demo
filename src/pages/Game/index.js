@@ -1,4 +1,4 @@
-import React, { useState }  from 'react';
+import React, { useState, useEffect }  from 'react';
 import Board from '../../components/Board';
 import { calculateWinner } from '../../utils/utils';
 import './style.css';
@@ -53,6 +53,24 @@ function Game() {
   } else {
     status = "Next player: " + (xIsNext ? "X" : "O");
   }
+
+  console.log('1、代码一，普通的语句，在每次状态有改动的时候就会去进行读取');
+
+  useEffect(() => {
+    console.log('3、类似componentDidMount的效果！')
+  }, []);
+
+  console.log('2、代码二');
+
+  useEffect(() => {
+    console.log('4、初始化的时候先调用一次，后续如果winner有改动，也会调用一次')
+    if(winner) {
+      document.title = `${winner} wins!`
+    }
+    return () => {
+      console.log('4.0、如果需要清除副作用，需要返回一个函数')
+    }
+  }, [winner]);
 
   return (
     <div className="game">
